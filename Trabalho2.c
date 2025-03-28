@@ -20,7 +20,7 @@ node* Allocation(){//FUNÇÃO QUE INICIALMENTE ALOCA HEAD NA MEMÓRIA
     return head;//RETORNA HEAD
 }
 
-void Insert(node *head){
+void Insert(node *head){//CRIAÇÃO DA FUNÇÃO DA FUNÇÃO QUE INSERE
     node *newNode = (node*)malloc(sizeof(node));//ALOCA DINAMICAMENTE O NOVO NÓ
     if(!newNode){//VERIFICA SE O NOVO NÓ FOI ALOCADO
         printf("\nMemória cheia!");
@@ -55,43 +55,46 @@ void Insert(node *head){
         }
 }
 
-void Remove(node *head){
+void Remove(node *head){//CRIAÇÃO DA FUNÇÃO QUE REMOVE
     int num = 0;
     printf("\nDigite o número da conta que deseja remover:\n");
     scanf("%d", &num);
-    node *aux3 = head->next;
-    while (aux3 != NULL){
-        if(aux3->numAcc == num){
-            printf("\nREMOVIDO COM SUCESSO\n");
-            free(aux3);
-        }else{
-            printf("\nNúmero da conta não encontrado, logo não é possível remover!\n");
-        }
-        aux3 = aux3->next;
+    node *prev = head;//PREV RECEBE HEAD COMO PARAMETRO
+    node *aux3 = head->next;//AUX RECEBE HEAD->NEXT COMO PARAMETRO, O PRIMEIRO NÓ COM CONTEUDO VALIDO
+    while (aux3 != NULL){//ENQUANTO AUX FOR DIFERENTE DE NULO
+        if(aux3->numAcc == num){//SE AUX->NUM ACC FOR IGUAL AO NÚMERO DE ACC QUE FOI DIGITADO
+            printf("\nREMOVIDO COM SUCESSO\n");//EXIBE A MENSAGEM DE REMOÇÃO
+            prev->next = aux3 ->next;//PREV->NEXT RECEBE AUX->NEXT
+            free(aux3);//E AUX É APAGADO DA MEMÓRIA SEM DEIXAR RASTROS COM FREE
+            }else{
+                printf("\nNúmero da conta não encontrado, logo não é possível remover!\n");
+            }   
+            prev = aux3;//CADA VEZ QUE O LOOP É ATUALIZADO PREV RECEBE AUX 
+            aux3 = aux3->next;//PERCORRE A LISTA
     }
     
 }
 
-void Show(node *head){
-    node *aux = head->next;
-    if (head->next == NULL){
+void Show(node *head){//CRIAÇÃO DA FUNÇÃO QUE EXIBE
+    node *aux = head->next;//CRIAÇÃO DO NÓ AUXILIAR PARA PERCORRER A LISTA
+    if (head->next == NULL){//SE A LISTA ESTIVER VAZIA EXIBE A MENSAGEM
         printf("\n-----------------------------------------------------");
         printf("\nLista vazia");
         printf("\n-----------------------------------------------------");
-    }else{
+    }else{//SE NÃO ESTIVER VAZIA PERCORRE A LISTA E EXIBE NÓ POR NÓ ATÉ AUX SER NULL
         while (aux != NULL)
         {
-            printf("\n-------------------------------------------------");
-            printf("\nNúmero da conta do cliente:----------------------%d", aux->numAcc);
-            printf("\nNome do cliente:---------------------------------%s", aux->name);
-            printf("\nSaldo do cliente:--------------------------------%f", aux->saldo);
-            printf("\n-------------------------------------------------");
-            aux = aux->next;
+            printf("\n------------------------------------------------------------------");
+            printf("\nNúmero da conta do cliente:                      %d", aux->numAcc);
+            printf("\nNome do cliente:                                 %s", aux->name);
+            printf("\nSaldo do cliente:                                %f", aux->saldo);
+            printf("\n------------------------------------------------------------------");
+            aux = aux->next;//DECLARAÇÃO PARA QUE A LISTA SEJA PERCORRIDA
         }
     }
 }
 
-void Selection(int *option, node *head){
+void Selection(int *option, node *head){//FUNÇÃO QUE LÊ A SELEÇÃO DA OPÇÃO ESCOLHIDA PELO USÚARIO
     printf("\nDigite o número correspondente a opção desejada:\n");
     printf("\n0-PARA SAIR\n1-PARA INSERIR UM CLIENTE\n2-PARA REMOVER UM CLIENTE\n3-PARA EXIBIR A LISTA DE CLIENTES\n");
     scanf("%d", option);
