@@ -21,33 +21,54 @@ node* Allocation(){//FUNÇÃO QUE INICIALMENTE ALOCA HEAD NA MEMÓRIA
 }
 
 void Insert(node *head){
-    node *newNode = (node*)malloc(sizeof(node));
-    if(!newNode){//CASO A ALOCAÇÃO DE MEMÓRIA FALHE RETORNA NULL
-        printf("\nA alocação de memória falhou, memória cheia!");
+    node *newNode = (node*)malloc(sizeof(node));//ALOCA DINAMICAMENTE O NOVO NÓ
+    if(!newNode){//VERIFICA SE O NOVO NÓ FOI ALOCADO
+        printf("\nMemória cheia!");
         return;
     }
-    newNode->next = NULL;//INICIALIZA NEWNODE
-    //PEDE OS DADOS A SEREM INSERIDOS NO BANCO
-    printf("\n-----------------------------------------------------");
-    printf("\nDigite o número da conta do cliente a ser adionado:\n");
-    scanf("%d", &newNode->numAcc);
+    newNode->next = NULL;//INICIALIZA O NOVO NÓ
+    printf("\nDigite o numero da conta do cliente:\n");
+    scanf("%d", &newNode->numAcc);//SOLICITA O NÚMERO DA CONTA DO CLIENTE
+    node *aux1 = head->next;//CRIAÇÃO DO NÓ AUX PARA PERCORRER O VETOR
+    while (aux1 != NULL){//LOOP QUE PERCORRE A LISTA PARA VERIFICAR SE O NÚMERO DA CONTA JÁ EXISTE NO BANCO DE DADOS
+        if(aux1->numAcc == newNode->numAcc){//SE O NÚMERO DA CONTA JÁ EXISTIR NA LISTA O NÓ NÃO É ALOCADO
+            printf("\n-----------------------------------------------------");
+            printf("\nO NÚMERO DA CONTA JÁ EXISTE NO BANCO DE DADOS!\n");
+            printf("\n-----------------------------------------------------");
+            free(newNode);
+            return;
+        }
+        aux1 = aux1->next;
+    }
     printf("\nDigite o nome do cliente:\n");
     scanf("%s", newNode->name);
-    printf("\nDigite o saldo a ser adicionado:\n");
+    printf("\nDigite o saldo do cliente:\n");
     scanf("%f", &newNode->saldo);
-    printf("\n-----------------------------------------------------");
-    if(head->next == NULL){//SE CABEÇA PRÓXIMO FOR NULO
-        head->next = newNode;//CABEÇA PRÓXIMO RECEBE O NOVO NÓ
-        }else{//SE NÃO FOR NULO
-            node *aux = head->next;//CRIO UM NÓ AUXILIAR QUE RECEBE CABEÇA PRÓXIMO
-            while (aux->next != NULL){//ENQUANTO AUXILIAR PROXIMO FOR DIFERENTE DE NULO
-                aux = aux->next;//AUX RECEBE AUXILIAR PROXIMO
+    if (head->next == NULL){//SE HEAD->NEXT FOR NULO HEAD->NEXT RECEBE O NOVO NÓ
+        head->next = newNode;
+        }else{//SE NÃO FOR O NÓ AUXILIAR PERCORRE A LISTA ATÉ QUE ->NEXT SEJA NULO
+            node *aux2 = head->next;
+            while(aux2->next != NULL){
+                aux2 = aux2->next;
             }
-            aux->next = newNode;//AO FIM DO LOOP AUXILIAR PROXIMO RECEBE O NOVO NÓ
+            aux2->next = newNode;//AUX->NEXT RECEBE O NOVO NÓ E ENTÃO ELE É ALOCADO
         }
 }
 
 void Remove(node *head){
+    int num = 0;
+    printf("\nDigite o número da conta que deseja remover:\n");
+    scanf("%d", &num);
+    node *aux3 = head->next;
+    while (aux3 != NULL){
+        if(aux3->numAcc == num){
+            printf("\nREMOVIDO COM SUCESSO\n");
+            free(aux3);
+        }else{
+            printf("\nNúmero da conta não encontrado, logo não é possível remover!\n");
+        }
+        aux3 = aux3->next;
+    }
     
 }
 
